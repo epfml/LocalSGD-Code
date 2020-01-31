@@ -1,0 +1,14 @@
+jupyterlab
+matplotlib
+numpy
+scipy
+setuptools
+sklearn
+seaborn
+tensorboard
+ipdb
+lmdb
+joblib
+pyarrow
+msgpack
+msgpack_numpy
