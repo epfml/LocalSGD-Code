@@ -69,33 +69,21 @@ def get_args():
 
     # learning rate scheme
     parser.add_argument("--lr", type=float, default=0.01)
-    parser.add_argument("--lr_schedule_scheme", type=str, default=None)
-
-    parser.add_argument("--lr_change_epochs", type=str, default=None)
-    parser.add_argument("--lr_fields", type=str, default=None)
-    parser.add_argument("--lr_scale_indicators", type=str, default=None)
-
-    parser.add_argument("--lr_scaleup", type=str2bool, default=False)
-    parser.add_argument("--lr_scaleup_type", type=str, default="linear")
     parser.add_argument(
-        "--lr_scaleup_factor",
+        "--lr_scheduler",
         type=str,
-        default="graph",
-        choices=["graph", "world"],
-        help="scale by the graph connection, or the world size",
+        default="MultiStepLR",
+        choices=["MultiStepLR", "ExponentialLR", "ReduceLROnPlateau"],
     )
+    parser.add_argument("--lr_milestones", type=str, default=None)
+    parser.add_argument("--lr_decay", type=float, default=0.1)
+    parser.add_argument("--lr_patience", type=int, default=10)
+    parser.add_argument("--lr_scaleup", type=str2bool, default=False)
+    parser.add_argument("--lr_scaleup_init_lr", type=float, default=None)
+    parser.add_argument("--lr_scaleup_factor", type=int, default=None)
     parser.add_argument("--lr_warmup", type=str2bool, default=False)
-    parser.add_argument("--lr_warmup_epochs", type=int, default=5)
-    parser.add_argument("--lr_decay", type=float, default=10)
-
-    parser.add_argument("--lr_onecycle_low", type=float, default=0.15)
-    parser.add_argument("--lr_onecycle_high", type=float, default=3)
-    parser.add_argument("--lr_onecycle_extra_low", type=float, default=0.0015)
-    parser.add_argument("--lr_onecycle_num_epoch", type=int, default=46)
-
-    parser.add_argument("--lr_gamma", type=float, default=None)
-    parser.add_argument("--lr_mu", type=float, default=None)
-    parser.add_argument("--lr_alpha", type=float, default=None)
+    parser.add_argument("--lr_warmup_epochs", type=int, default=None)
+    parser.add_argument("--lr_warmup_epochs_upper_bound", type=int, default=150)
 
     # optimizer
     parser.add_argument("--optimizer", type=str, default="sgd")

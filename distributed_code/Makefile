@@ -4,7 +4,7 @@ SCALE=$(sc)
 NAMESPACE=.iccluster.epfl.ch
 IP=${HOST}${SERVER}${NAMESPACE}
 DISK=/mlodata1/tlin
-FOLDER=choco_decentralized_code
+FOLDER=distributed_code
 LOCALPORT=${lp}
 REMORTPORT=${rp}
 USE_CUDA=${cuda}
@@ -28,7 +28,7 @@ ssh_notebook:
 cp_all_gpu:
 	rsync -av -e ssh --exclude 'data' ../${FOLDER}/* ${IP}:${DISK}/${FOLDER}
 	rsync -av -e ssh --exclude 'data' ../${FOLDER}/* ${IP}:/mloraw1/tlin/${FOLDER}
-
+	# rsync -av -e ssh --exclude 'data' ../${FOLDER}/* ${IP}:/mlo-container-scratch/tlin/${FOLDER}
 
 # docker....
 docker_run:
@@ -57,6 +57,9 @@ setup:
 	-kubectl create -f iccluster/pod-controller.yaml
 	# -kubectl create -f iccluster/pod-svc-timeseries.yaml
 	# -kubectl create -f iccluster/pod-svc-metadata.yaml
+
+copy_summary:
+	rsync -aP --exclude "*.pyc" --exclude "*.ipynb" --exclude "*.pth.tar" --exclude "*.txt" --exclude "*.json" /mloraw1/tlin/unified_distributed_code/* /mlo-container-scratch/tlin/unified_distributed_code/
 
 scale:
 	kubectl scale statefulsets lin-worker --replicas=${SCALE}

@@ -73,7 +73,7 @@ def main(conf):
     optimizer = create_optimizer.define_optimizer(conf, model)
 
     # define the lr scheduler.
-    scheduler = create_scheduler.Scheduler(conf)
+    scheduler = create_scheduler.Scheduler(conf, optimizer)
 
     # add model with data-parallel wrapper.
     if conf.graph.on_cuda:

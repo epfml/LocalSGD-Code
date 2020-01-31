@@ -37,10 +37,11 @@ def define_optimizer(conf, model):
     else:
         raise NotImplementedError
 
-    return optim_class(
+    optimizer = optim_class(
         params,
         lr=conf.lr,
         momentum=conf.momentum_factor,
         nesterov=conf.use_nesterov,
         conf=conf,
     )
+    return optimizer
