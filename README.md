@@ -9,7 +9,7 @@ As a remedy, we propose a post-local SGD and show that it significantly improves
 
 
 # Code usage
-We rely on `Docker` for our experimental environments. Please refer to the folder `environments/docker` for more details.
+We rely on `Docker` for our experimental environments. Please refer to the folder `distributed_code/environments/docker` for more details.
 
 The script below trains `ResNet-20` with `CIFAR-10`, as an example of centralized training algorithm `(post) local SGD`.
 For the detailed instructions and more examples, please refer to the file `distributed_code/README.md`.
