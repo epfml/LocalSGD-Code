@@ -17,9 +17,59 @@ Some simple explanation of the arguments used in the code.
     * The `optimizer` will decide the type of distributed training, e.g., centralized SGD, decentralized SGD
     * The `comm_op` specifies the communication compressor we can use, e.g., `sign+norm`, `random-k`, `top-k`.
 * Arguments related to *learning*:
-    * The `lr_schedule_scheme` and `lr_change_epochs` indicates that it is a stepwise learning rate schedule, with decay factor `10` for epoch `150` and `225`.
-    * The `lr_scaleup`, `lr_warmup` and `lr_warmup_epochs` will decide if we want to scale up the learning rate, or warm up the learning rate.
+    * The `lr_scaleup`, `lr_warmup` and `lr_warmup_epochs` will decide if we want to scale up the learning rate, or warm up the learning rate. For more details, please check `pcode/create_scheduler.py`.
 
 ### Examples
 The script below trains `ResNet-20` with `CIFAR-10`, as an example of centralized training algorithm `(post-)local SGD`.
-]
+```bash
+OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
+    --arch resnet20 --optimizer local_sgd \
+    --avg_model True --experiment demo --manual_seed 6 \
+    --data cifar10 --pin_memory True \
+    --batch_size 128 --base_batch_size 64 --num_workers 2 --eval_freq 1 \
+    --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
+    --n_mpi_process 16 --n_sub_process 1 --world 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 \
+    --on_cuda True --use_ipc False \
+    --lr 0.1 --lr_scaleup True --lr_warmup True --lr_warmup_epochs 5 \
+    --lr_scheduler MultiStepLR --lr_decay 0.1 --lr_milestones 150,225 \
+    --local_step 16 --turn_on_local_step_from 150 \
+    --weight_decay 1e-4 --use_nesterov True --momentum_factor 0.9 \
+    --hostfile hostfile --graph_topology complete --track_time True --display_tracked_time True \
+    --python_path $HOME/conda/envs/pytorch-py3.6/bin/python --mpi_path $HOME/.openmpi/
+```
+
+The script below trains `ResNet-20` with `CIFAR-10`, as an example of centralized training algorithm `post-local SGD` with `sign` based communication compressor.
+```
+OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
+    --arch resnet20 --optimizer local_sign_sgd \
+    --avg_model True --experiment sign --manual_seed 6 \
+    --data cifar10 --pin_memory True \
+    --batch_size 128 --base_batch_size 128 --num_workers 2 --eval_freq 1 \
+    --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
+    --n_mpi_process 16 --n_sub_process 1 --world 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 \
+    --on_cuda True --use_ipc False \
+    --lr 0.01 --lr_scaleup True --lr_warmup True --lr_warmup_epochs 5 \
+    --lr_scheduler MultiStepLR --lr_decay 0.1 --lr_milestones 150,225 \
+    --local_step 16 --turn_on_local_step_from 150 \
+    --weight_decay 1e-4 --use_nesterov True --momentum_factor 0.9 \
+    --hostfile hostfile --graph_topology complete --track_time True --display_tracked_time True \
+    --python_path $HOME/conda/envs/pytorch-py3.6/bin/python --mpi_path $HOME/.openmpi/
+```
+
+The script below trains `ResNet-20` with `CIFAR-10`, as an example of centralized training algorithm `post-local SGD` with `sign+norm` based communication compressor.
+```
+OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
+    --arch resnet20 --optimizer local_ef_sign_sgd \
+    --avg_model True --experiment sign --manual_seed 6 \
+    --data cifar10 --pin_memory True \
+    --batch_size 128 --base_batch_size 128 --num_workers 2 --eval_freq 1 \
+    --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
+    --n_mpi_process 16 --n_sub_process 1 --world 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 \
+    --on_cuda True --use_ipc False \
+    --lr 0.1 --lr_scaleup True --lr_warmup True --lr_warmup_epochs 5 \
+    --lr_scheduler MultiStepLR --lr_decay 0.1 --lr_milestones 150,225 \
+    --local_step 16 --turn_on_local_step_from 150 \
+    --weight_decay 1e-4 --use_nesterov True --momentum_factor 0.9 \
+    --hostfile hostfile --graph_topology complete --track_time True --display_tracked_time True \
+    --python_path $HOME/conda/envs/pytorch-py3.6/bin/python --mpi_path $HOME/.openmpi/
+```

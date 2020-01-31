@@ -188,8 +188,5 @@ def init_config(conf):
 
 
 if __name__ == "__main__":
-    mp.set_start_method("forkserver", force=True)
-    # mp.set_start_method("spawn", force=True)
-    mp.set_sharing_strategy("file_system")
     conf = get_args()
     main(conf)

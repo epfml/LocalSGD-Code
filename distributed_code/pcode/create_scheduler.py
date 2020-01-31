@@ -132,6 +132,12 @@ class Scheduler(object):
         self.epoch = int(self.epoch_)
         self.conf.epoch = self.epoch
 
+    def is_stop(self):
+        if self.conf.stop_criteria == "epoch":
+            return self.epoch >= self.conf.num_epochs
+        elif self.conf.stop_criteria == "iteration":
+            return self.local_index >= self.conf.num_iterations_per_worker
+
     def update_from_checkpoint(self, checkpoint):
         self.conf.local_index = checkpoint["local_index"]
         self.local_index = checkpoint["local_index"]

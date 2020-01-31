@@ -31,20 +31,6 @@ def train_and_validate(
     # get the timer.
     timer = conf.timer
 
-    for epoch_idx in range(conf.num_epochs):
-        for batch_idx in range(len(data_loader["train_loader"])):
-            print(
-                "before",
-                epoch_idx,
-                batch_idx,
-                conf.local_index,
-                conf.epoch_,
-                optimizer.param_groups[0]["lr"],
-            )
-            optimizer.step(timer=timer)
-            scheduler.step()
-    return
-
     # break until finish expected full epoch training.
     print("=>>>> enter the training.\n")
     while True:
