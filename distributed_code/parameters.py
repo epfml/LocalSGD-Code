@@ -158,7 +158,6 @@ def get_args():
         default=False,
         help="evaluate model on validation set",
     )
-    parser.add_argument("--eval_freq", default=1, type=int)
     parser.add_argument("--summary_freq", default=100, type=int)
     parser.add_argument("--timestamp", default=None, type=str)
     parser.add_argument("--track_time", default=False, type=str2bool)

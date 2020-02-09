@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import gc
-import copy
 import numpy as np
 import torch
 import torch.distributed as dist
@@ -30,7 +29,6 @@ def train_and_validate(
 
     # get the timer.
     timer = conf.timer
-
     # break until finish expected full epoch training.
     print("=>>>> enter the training.\n")
     while True:
@@ -148,7 +146,6 @@ def validate(
     metrics,
     data_loader,
     label="local_model",
-    force_evaluate_on_averaged_model=True,
 ):
     """A function for model evaluation."""
 

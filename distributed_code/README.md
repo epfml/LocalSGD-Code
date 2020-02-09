@@ -26,29 +26,29 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python ru
     --arch resnet20 --optimizer local_sgd \
     --avg_model True --experiment demo --manual_seed 6 \
     --data cifar10 --pin_memory True \
-    --batch_size 128 --base_batch_size 64 --num_workers 2 --eval_freq 1 \
+    --batch_size 128 --base_batch_size 64 --num_workers 2 \
     --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
     --n_mpi_process 16 --n_sub_process 1 --world 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 \
     --on_cuda True --use_ipc False \
     --lr 0.1 --lr_scaleup True --lr_warmup True --lr_warmup_epochs 5 \
     --lr_scheduler MultiStepLR --lr_decay 0.1 --lr_milestones 150,225 \
-    --local_step 16 --turn_on_local_step_from 150 \
+    --local_step 32 --turn_on_local_step_from 150 \
     --weight_decay 1e-4 --use_nesterov True --momentum_factor 0.9 \
     --hostfile hostfile --graph_topology complete --track_time True --display_tracked_time True \
     --python_path $HOME/conda/envs/pytorch-py3.6/bin/python --mpi_path $HOME/.openmpi/
 ```
 
 The script below trains `ResNet-20` with `CIFAR-10`, as an example of centralized training algorithm `post-local SGD` with `sign` based communication compressor.
-```
+```bash
 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
     --arch resnet20 --optimizer local_sign_sgd \
     --avg_model True --experiment sign --manual_seed 6 \
     --data cifar10 --pin_memory True \
-    --batch_size 128 --base_batch_size 128 --num_workers 2 --eval_freq 1 \
+    --batch_size 128 --base_batch_size 128 --num_workers 2 \
     --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
     --n_mpi_process 16 --n_sub_process 1 --world 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 \
     --on_cuda True --use_ipc False \
-    --lr 0.01 --lr_scaleup True --lr_warmup True --lr_warmup_epochs 5 \
+    --lr 0.01 --lr_scaleup False --lr_warmup False --lr_warmup_epochs 5 \
     --lr_scheduler MultiStepLR --lr_decay 0.1 --lr_milestones 150,225 \
     --local_step 16 --turn_on_local_step_from 150 \
     --weight_decay 1e-4 --use_nesterov True --momentum_factor 0.9 \
@@ -57,19 +57,37 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python ru
 ```
 
 The script below trains `ResNet-20` with `CIFAR-10`, as an example of centralized training algorithm `post-local SGD` with `sign+norm` based communication compressor.
-```
+```bash
 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
     --arch resnet20 --optimizer local_ef_sign_sgd \
     --avg_model True --experiment sign --manual_seed 6 \
     --data cifar10 --pin_memory True \
-    --batch_size 128 --base_batch_size 128 --num_workers 2 --eval_freq 1 \
+    --batch_size 128 --base_batch_size 128 --num_workers 2 \
     --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
     --n_mpi_process 16 --n_sub_process 1 --world 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 \
     --on_cuda True --use_ipc False \
     --lr 0.1 --lr_scaleup True --lr_warmup True --lr_warmup_epochs 5 \
     --lr_scheduler MultiStepLR --lr_decay 0.1 --lr_milestones 150,225 \
-    --local_step 16 --turn_on_local_step_from 150 \
+    --local_step 64 --turn_on_local_step_from 150 \
     --weight_decay 1e-4 --use_nesterov True --momentum_factor 0.9 \
     --hostfile hostfile --graph_topology complete --track_time True --display_tracked_time True \
+    --python_path $HOME/conda/envs/pytorch-py3.6/bin/python --mpi_path $HOME/.openmpi/
+```
+
+The script example of `LSTM` on `wikitext2` for `SGD` follows:
+```bash
+OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
+    --arch rnn_lm --rnn_n_hidden 650 --rnn_n_layers 3 --rnn_bptt_len 30 \
+    --rnn_clip 0.4 --rnn_use_pretrained_emb False --rnn_tie_weights True --drop_rate 0.40 \
+    --optimizer sgd --avg_model True --experiment test \
+    --data wikitext2 --pin_memory True \
+    --batch_size 32 --base_batch_size 24 --num_workers 2 \
+    --num_epochs 300 --partition_data random --reshuffle_per_epoch False --stop_criteria epoch \
+    --n_mpi_process 32 --n_sub_process 1 --world 0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1 \
+    --on_cuda True --use_ipc False --comm_device cuda \
+    --lr 2.5 --lr_scaleup True --lr_warmup True --lr_warmup_epochs 5 \
+    --lr_scheduler MultiStepLR --lr_decay 0.1 --lr_milestones 150,225 \
+    --weight_decay 0 --use_nesterov False --momentum_factor 0 \
+    --hostfile iccluster/hostfile2 --graph_topology social --track_time True --display_tracked_time True \
     --python_path $HOME/conda/envs/pytorch-py3.6/bin/python --mpi_path $HOME/.openmpi/
 ```

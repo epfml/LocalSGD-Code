@@ -18,7 +18,7 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python ru
     --arch resnet20 --optimizer local_sgd \
     --avg_model True --experiment demo --manual_seed 6 \
     --data cifar10 --pin_memory True \
-    --batch_size 128 --base_batch_size 64 --num_workers 2 --eval_freq 1 \
+    --batch_size 128 --base_batch_size 64 --num_workers 2 \
     --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
     --n_mpi_process 16 --n_sub_process 1 --world 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 \
     --on_cuda True --use_ipc False \
