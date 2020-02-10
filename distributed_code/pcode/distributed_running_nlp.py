@@ -40,7 +40,6 @@ def train_and_validate(
         # configure local step.
         for batch in data_loader["train_loader"]:
             model.train()
-            scheduler.step(optimizer)
 
             # repackage the hidden.
             _hidden = (
@@ -86,6 +85,7 @@ def train_and_validate(
                 # `clip_grad_norm` helps prevent the exploding gradient problem in RNNs / LSTMs.
                 torch.nn.utils.clip_grad_norm_(model.parameters(), conf.rnn_clip)
                 n_bits_to_transmit = optimizer.step(timer=timer)
+                scheduler.step()
 
             # display the logging info.
             display_training_stat(conf, scheduler, tracker_tr, n_bits_to_transmit)
