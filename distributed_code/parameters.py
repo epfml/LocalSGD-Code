@@ -80,7 +80,7 @@ def get_args():
     parser.add_argument("--lr_patience", type=int, default=10)
     parser.add_argument("--lr_scaleup", type=str2bool, default=False)
     parser.add_argument("--lr_scaleup_init_lr", type=float, default=None)
-    parser.add_argument("--lr_scaleup_factor", type=int, default=None)
+    parser.add_argument("--lr_scaleup_factor", type=str, default=None)
     parser.add_argument("--lr_warmup", type=str2bool, default=False)
     parser.add_argument("--lr_warmup_epochs", type=int, default=None)
     parser.add_argument("--lr_warmup_epochs_upper_bound", type=int, default=150)

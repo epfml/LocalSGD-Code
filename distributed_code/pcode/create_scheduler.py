@@ -3,6 +3,8 @@ import torch
 from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
+import pcode.utils.auxiliary as auxiliary
+
 
 class Scheduler(object):
     def __init__(self, conf, optimizer):
@@ -33,6 +35,17 @@ class Scheduler(object):
         if self.conf.lr_scaleup:
             if self.conf.lr_scaleup_factor is None:
                 self.lr_scaleup_factor = self.conf.graph.n_nodes
+            else:
+                if auxiliary.is_float(self.conf.lr_scaleup_factor):
+                    self.lr_scaleup_factor = float(self.conf.lr_scaleup_factor)
+                else:
+                    if self.conf.lr_scaleup_factor == "graph":
+                        self.lr_scaleup_factor = self.conf.graph.scaling
+                    elif self.conf.lr_scaleup_factor == "world":
+                        self.lr_scaleup_factor = self.conf.graph.n_nodes
+                    else:
+                        raise NotImplementedError
+
             self.learning_rate = self.learning_rate_ * self.lr_scaleup_factor
         else:
             self.learning_rate = self.learning_rate_

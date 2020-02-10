@@ -188,5 +188,14 @@ def init_config(conf):
 
 
 if __name__ == "__main__":
+    # parse the arguments.
     conf = get_args()
+
+    # configure for multi-process training.
+    if conf.optimizer == "parallel_choco":
+        mp.set_start_method("forkserver", force=True)
+        # mp.set_start_method("spawn", force=True)
+        mp.set_sharing_strategy("file_system")
+
+    # enter the training procedure.
     main(conf)
