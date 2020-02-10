@@ -130,7 +130,7 @@ class ParallelCHOCO(Optimizer):
             print(f"error: {e}")
 
         # define aggregator and compressor.
-        conf.graph._make_process_group()
+        # conf.graph._make_process_group()
         aggregator = comm.get_aggregators(
             cur_rank=conf.graph.rank,
             world=conf.graph.ranks,
