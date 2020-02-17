@@ -42,7 +42,7 @@ The script below trains `ResNet-20` with `CIFAR-10`, as an example of centralize
 ```bash
 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
     --arch resnet20 --optimizer local_sign_sgd \
-    --avg_model True --experiment sign --manual_seed 6 \
+    --avg_model True --experiment demo --manual_seed 6 \
     --data cifar10 --pin_memory True \
     --batch_size 128 --base_batch_size 128 --num_workers 2 \
     --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
@@ -60,7 +60,7 @@ The script below trains `ResNet-20` with `CIFAR-10`, as an example of centralize
 ```bash
 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
     --arch resnet20 --optimizer local_ef_sign_sgd \
-    --avg_model True --experiment sign --manual_seed 6 \
+    --avg_model True --experiment demo --manual_seed 6 \
     --data cifar10 --pin_memory True \
     --batch_size 128 --base_batch_size 128 --num_workers 2 \
     --num_epochs 300 --partition_data random --reshuffle_per_epoch True --stop_criteria epoch \
@@ -79,7 +79,7 @@ The script example of `LSTM` on `wikitext2` for `SGD` follows:
 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python run.py \
     --arch rnn_lm --rnn_n_hidden 650 --rnn_n_layers 3 --rnn_bptt_len 30 \
     --rnn_clip 0.4 --rnn_use_pretrained_emb False --rnn_tie_weights True --drop_rate 0.40 \
-    --optimizer sgd --avg_model True --experiment test \
+    --optimizer sgd --avg_model True --experiment demo \
     --data wikitext2 --pin_memory True \
     --batch_size 32 --base_batch_size 24 --num_workers 2 \
     --num_epochs 300 --partition_data random --reshuffle_per_epoch False --stop_criteria epoch \
@@ -88,6 +88,6 @@ OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 $HOME/conda/envs/pytorch-py3.6/bin/python ru
     --lr 2.5 --lr_scaleup True --lr_warmup True --lr_warmup_epochs 5 \
     --lr_scheduler MultiStepLR --lr_decay 0.1 --lr_milestones 150,225 \
     --weight_decay 0 --use_nesterov False --momentum_factor 0 \
-    --hostfile iccluster/hostfile2 --graph_topology social --track_time True --display_tracked_time True \
+    --hostfile hostfile --graph_topology complete --track_time True --display_tracked_time True \
     --python_path $HOME/conda/envs/pytorch-py3.6/bin/python --mpi_path $HOME/.openmpi/
 ```
