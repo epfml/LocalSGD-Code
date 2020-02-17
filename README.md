@@ -35,9 +35,9 @@ If you use this code, please cite the following [paper](https://openreview.net/f
 
 ```
 @inproceedings{lin2020dont,
-    title={Don't Use Large Mini-batches, Use Local SGD},
+    title={Don't Use Large Mini-batches, Use Local {SGD}},
     author={Tao Lin and Sebastian U. Stich and Kumar Kshitij Patel and Martin Jaggi},
-    booktitle={International Conference on Learning Representations},
+    booktitle={ICLR - International Conference on Learning Representations},
     year={2020},
     url={https://openreview.net/forum?id=B1eyO1BFPr}
 }
