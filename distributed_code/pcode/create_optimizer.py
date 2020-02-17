@@ -6,12 +6,7 @@ from pcode.optim.local_ef_sign_sgd import Local_EFSignSGD
 from pcode.optim.local_sign_sgd import Local_SignSGD
 from pcode.optim.sign_sgd import SignSGD
 from pcode.optim.ef_sign_sgd import EF_SignSGD
-
 from pcode.optim.dgc import DGC
-from pcode.optim.parallel_choco import ParallelCHOCO
-from pcode.optim.dcd_psgd import DCD_PSGD
-from pcode.optim.ecd_psgd import ECD_PSGD
-from pcode.optim.deep_squeeze import DeepSqueeze
 
 
 def define_optimizer(conf, model):
@@ -42,14 +37,6 @@ def define_optimizer(conf, model):
         optim_class = Local_SignSGD
     elif conf.optimizer == "local_ef_sign_sgd":
         optim_class = Local_EFSignSGD
-    elif conf.optimizer == "dcd_psgd":
-        optim_class = DCD_PSGD
-    elif conf.optimizer == "ecd_psgd":
-        optim_class = ECD_PSGD
-    elif conf.optimizer == "parallel_choco":
-        optim_class = ParallelCHOCO
-    elif conf.optimizer == "deep_squeeze":
-        optim_class = DeepSqueeze
     else:
         raise NotImplementedError
 
